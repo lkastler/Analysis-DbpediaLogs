@@ -34,6 +34,10 @@ def handleDescribe(regex, query):
 def handleAsk(regex, query):
 	countKeywords('ask', regex, query)
 
+''''''
+def handleFilter(regex, query):
+	countKeywords('filter', regex, query)
+
 def countKeywords(keyword, regex, query):
 	global result
 	
@@ -68,6 +72,7 @@ def startAnalysis():
 	regexs[re.compile('\w(ask|ASK)\w')] = handleAsk 
 	regexs[re.compile('\w(describe|DESCRIBE)\w')] = handleDescribe
 	regexs[re.compile('\w(graph|GRAPH)\w')] = handleGraph
+	regexs[re.compile('\w(filter|FILTER)\w')] = handleFilter
 
 	bgp = open(config.bgpfile, 'w+')
 	sparqls = open(config.sparqloutput, "r")
