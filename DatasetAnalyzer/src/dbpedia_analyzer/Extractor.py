@@ -10,6 +10,7 @@ class Extractor:
 		self.logger = logger
 		
 		self.stats = {}
+		self.stats['count'] = 0
 		self.stats['resource'] = 0
 		self.stats['ontology'] = 0
 		self.stats['malformed-sparql'] = 0
@@ -26,6 +27,7 @@ class Extractor:
 	
 	''''''
 	def extract(self, line):
+		self.stats['count'] += 1
 		self.analyzeUrl(self.extractUrl(line))
 	
 	''''''
