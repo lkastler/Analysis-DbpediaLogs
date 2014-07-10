@@ -16,5 +16,8 @@ analysisLog = '../output/analysis.log'
 global bgpfile
 bgpfile = '../output/bgp.txt'
 
+global bgpanalysis
+bgpanalysis = '../output/bgp-analysis.csv'
+
 global bgpanalysisLog
-bgpanalysisLog = '../output/bgp-analysis.csv'
+bgpanalysisLog = '../output/bgp-analysis.log'

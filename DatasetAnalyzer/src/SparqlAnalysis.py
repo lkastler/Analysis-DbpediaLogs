@@ -73,9 +73,12 @@ def startAnalysis():
 	regexs[re.compile('\w(describe|DESCRIBE)\w')] = handleDescribe
 	regexs[re.compile('\w(graph|GRAPH)\w')] = handleGraph
 	regexs[re.compile('\w(filter|FILTER)\w')] = handleFilter
-
-	bgp = open(config.bgpfile, 'w+')
-	sparqls = open(config.sparqloutput, "r")
+	
+	try:
+		bgp = open(config.bgpfile, 'w+')
+		sparqls = open(config.sparqloutput, "r")
+	except Exception as e:
+		logging.error("Error: ", e)
 	
 	logging.info('parse: ' + config.sparqloutput)
 	
@@ -83,23 +86,25 @@ def startAnalysis():
 	
 	for key in regexs:
 			result[str(key)] = {}
-	
-	
-	
-	for line in sparqls.readlines():
-		result['queries'] += 1		
+	try:
+		for line in sparqls.readlines():
+			result['queries'] += 1		
+				
+			for regex, func in regexs.iteritems():
+				if regex.match(line):
+					func(regex, line)
 			
-		for regex, func in regexs.iteritems():
-			if regex.match(line):
-				func(regex, line)
+			getBGP(bgp, str(line))
+	except Exception as e:
+		logging.error("Error: ", e)
+	finally:
+		bgp.flush()
+		bgp.close()
 		
-		getBGP(bgp, str(line))
+		sparqls.flush()
+		sparqls.close()
 		
-	
-	bgp.close()
-	sparqls.close()
-	
-	logging.info(result)
+		logging.info(result)
 	
 if __name__ == '__main__':
 	startAnalysis()
