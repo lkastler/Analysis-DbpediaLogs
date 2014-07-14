@@ -1,23 +1,25 @@
+superdir = ""
+
 global inputfolder
-inputfolder =  '../data'
+inputfolder =  superdir +'/data'
 
 global sparqloutput
-sparqloutput = '../output/sparqls.txt'
+sparqloutput = superdir +'/output/sparqls.txt'
 
 global malformedsparql
-malformedsparql = '../output/malformed-sparql.txt'
+malformedsparql = superdir +'/output/malformed-sparql.txt'
 
 global extractionLog
-extractionLog = '../output/extraction.log'
+extractionLog = superdir +'/output/extraction.log'
 
 global analysisLog
-analysisLog = '../output/analysis.log'
+analysisLog = superdir +'/output/analysis.log'
 
 global bgpfile
-bgpfile = '../output/bgp.txt'
+bgpfile = superdir +'/output/bgp.txt'
 
 global bgpanalysis
-bgpanalysis = '../output/bgp-analysis.csv'
+bgpanalysis = superdir +'/output/bgp-analysis.csv'
 
 global bgpanalysisLog
-bgpanalysisLog = '../output/bgp-analysis.log'
+bgpanalysisLog = superdir +'/output/bgp-analysis.log'
