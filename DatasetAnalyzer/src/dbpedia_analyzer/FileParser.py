@@ -1,7 +1,8 @@
-''' parses all files in the given folder '''
+import bz2  # @UnresolvedImport
+import os
+
 def parseFolder(logger, folderName):
-	import os
-	
+	''' parses all files in the given folder '''
 	logger.info("processing folder: %s", folderName)
 	
 	for dirname, _, filenames in os.walk(folderName):
@@ -10,16 +11,32 @@ def parseFolder(logger, folderName):
 			
 	logger.info('done')
 
-
-''' parses given bz2 file'''
-def parseFile(logger, fileName):
-	import bz2  # @UnresolvedImport
+def parseBZ2File(logger, fileName):
+	''' parses given bz2 file'''
 	
 	logger.info('loading file: %s', fileName)
 	
 	f = bz2.BZ2File(fileName)
+	line = f.readline()
 	
-	for line in f.readlines():
+	while line != '':
 		yield line
+		line = f.readline()
+	
+	logger.info('done loading file')
+	f.close()
+
+def parseFile(logger, fileName):
+	''' parses given text file '''
+	
+	logger.info('loading file: %s', fileName)
+	
+	f = open(fileName, 'r')
+	
+	line = f.readline()
+	while line != '' :
+		yield line
+		line = f.readline()
+	
 	logger.info('done loading file')
 	f.close()
