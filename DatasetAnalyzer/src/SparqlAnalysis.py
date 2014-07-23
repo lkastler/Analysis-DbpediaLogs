@@ -39,7 +39,7 @@ def countKeywords(keyword, regex, query):
 	''' counts the occurrences of given keyword in the given query by using the given regular expression'''
 	count = str(len(regex.findall(query)))
 	
-	global results
+	global resultsimport
 	
 	if keyword not in results:
 		results[keyword] = defaultdict(int)

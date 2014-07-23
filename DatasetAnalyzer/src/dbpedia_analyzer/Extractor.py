@@ -5,10 +5,8 @@ Created on Jul 2, 2014
 '''
 
 import apachelog
-import rdflib.plugins.sparql as validator
 import re
 import urllib2
-import namespaces as ns
 from collections import defaultdict
 		
 class Extractor:
@@ -20,7 +18,7 @@ class Extractor:
 	'''identifies the primary resource'''
 	_primary_resource = re.compile('^/\w+(\?|/)?')
 	
-	def __init__(self, logger, sparqls, malformed, sparqlLogEntries):
+	def __init__(self, logger, sparqlLogEntries):
 		'''initial set up'''
 		# logging
 		self.log = logger
@@ -30,9 +28,7 @@ class Extractor:
 		
 		# files
 		self.sparqlLogEntries = sparqlLogEntries
-		self.sparqls = sparqls
-		self.malformed = malformed
-		
+
 		# apache log file parser
 		self.parser = apachelog.parser(Extractor._log_format)
 		
@@ -42,12 +38,12 @@ class Extractor:
 		''' starts the extraction process for one line encoding a Apache log file entry '''
 		self.stats['count'] += 1
 		
-		self.extractResource(line)
+		return self.extractResource(line)
 	
 	def extractResource(self, line):
 		''' extracts the resource from a apache log file '''
 		res = self.parser.parse(line)
-		self.analyzeResource(res['%r'])
+		return self.analyzeResource(res['%r'])
 	
 	def analyzeResource(self, res):
 		''' tests regex pattern on the given url snipplet and executes corresponding functions if they match '''
@@ -61,7 +57,7 @@ class Extractor:
 				
 				# handle sparql differentyl
 				if identifier == "sparql":
-					self.extractSparql(res)
+					return self.extractSparql(res)
 		else:
 			self.log.warn("could not identify kind of request", res)
 	
@@ -76,20 +72,6 @@ class Extractor:
 				query = urllib2.unquote(query)
 				query = re.sub('(\+)+', ' ', query)
 				query = re.sub('\s+', ' ', query)
-				query = query.strip()
+				return query.strip()
 				
-				#self.validateSparql(query)
-				self.sparqlLogEntries.write(query + '\n')
-	
-	
-	def validateSparql(self, sparql):
-		''' validates a sparql query and stores it in a separate file '''
-		sparql = str(sparql)
-		
-		try:
-			validator.prepareQuery(sparql, initNs=ns.ns)
-			self.sparqls.write(sparql + '\n')
-		except Exception as error:
-			self.stats['malformed-sparql'] += 1 
-			self.malformed.write(str([str(type(error)), str(error), sparql]) + '\n')
 	

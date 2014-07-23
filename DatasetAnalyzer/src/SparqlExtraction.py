@@ -8,7 +8,9 @@ import Config as config
 from dbpedia_analyzer import Extractor as ex
 from dbpedia_analyzer import FileParser as fp
 import logging as log
-	
+import sys
+import traceback
+
 def main():
 	'''teh main'''
 	log.basicConfig(filename=config.extractionLog,level=log.DEBUG)
@@ -17,25 +19,25 @@ def main():
 	
 	logger.info("START")
 	
-	malsparql = open(config.malformedsparql, 'w+')
-	sparqls = open(config.sparqloutput, 'w+')
-	sparqlLogEntries = open(config.sparqlLogEntries, 'w+')
+	sparqls = open(config.sparqlLogEntries, 'w+')
 	
-	extract = ex.Extractor(logger, sparqls, malsparql, sparqlLogEntries)
+	extract = ex.Extractor(logger, sparqls)
 	
 	for f in fp.parseFolder(logger, config.inputfolder):
 		for item in fp.parseBZ2File(logger, f):
-			extract.extract(item)
+			try:
+				query = extract.extract(item)
+				
+				if query != None:
+					sparqls.write(query + '\n')
+			except Exception:
+				exc_type, exc_value, exc_traceback = sys.exc_info()
+				lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+				logger.error(''.join(line for line in lines))
 		logger.info(extract.stats)
 		
 	sparqls.flush()
 	sparqls.close()
-	
-	malsparql.flush()
-	malsparql.close()
-	
-	sparqlLogEntries.flush()
-	sparqlLogEntries.close()
 	
 	logger.info("END")
 	logger.info(extract.stats)
