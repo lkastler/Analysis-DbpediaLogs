@@ -13,7 +13,6 @@ def parseFolder(logger, folderName):
 
 def parseBZ2File(logger, fileName):
 	''' parses given bz2 file'''
-	
 	logger.info('loading file: %s', fileName)
 	
 	f = bz2.BZ2File(fileName)
@@ -28,7 +27,6 @@ def parseBZ2File(logger, fileName):
 
 def parseFile(logger, fileName):
 	''' parses given text file '''
-	
 	logger.info('loading file: %s', fileName)
 	
 	f = open(fileName, 'r')

@@ -36,7 +36,6 @@ class Extractor:
 		
 		self.log.info("created extractor")
 	
-	
 	def extract(self, line):
 		''' starts the extraction process for one line encoding a Apache log file entry '''
 		self.stats['count'] += 1
@@ -47,8 +46,6 @@ class Extractor:
 		''' extracts the resource from a apache log file '''
 		res = self.parser.parse(line)
 		self.analyzeResource(res['%r'])
-		
-	
 	
 	def analyzeResource(self, res):
 		''' tests regex pattern on the given url snipplet and executes corresponding functions if they match '''
@@ -65,7 +62,6 @@ class Extractor:
 					self.extractSparql(res)
 		else:
 			self.log.warn("could not identify kind of request", res)
-	
 	
 	def extractSparql(self, res):
 		''' extracts sparql query from the given resource snipplet ''' 

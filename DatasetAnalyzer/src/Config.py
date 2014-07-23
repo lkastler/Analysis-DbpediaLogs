@@ -1,4 +1,4 @@
-superdir = ""
+superdir = ".."
 
 global inputfolder
 inputfolder =  superdir +'/data'
@@ -18,8 +18,8 @@ analysisLog = superdir +'/output/analysis.log'
 global bgpfile
 bgpfile = superdir +'/output/bgp.txt'
 
-global bgpanalysis
-bgpanalysis = superdir +'/output/bgp-analysis.csv'
+global bgpExtractFile
+bgpExtractFile = superdir +'/output/bgp-analysis.csv'
 
-global bgpanalysisLog
-bgpanalysisLog = superdir +'/output/bgp-analysis.log'
+global bgpExtractLog
+bgpExtractLog = superdir +'/output/bgp-analysis.log'
