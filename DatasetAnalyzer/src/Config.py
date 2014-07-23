@@ -23,3 +23,6 @@ bgpExtractFile = superdir +'/output/bgp-analysis.csv'
 
 global bgpExtractLog
 bgpExtractLog = superdir +'/output/bgp-analysis.log'
+
+global sparqlLogEntries
+sparqlLogEntries = superdir + '/output/sparql-uncleaned.log'

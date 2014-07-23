@@ -3,12 +3,11 @@ Created on Jun 25, 2014
 
 @author: lkastler
 '''
-
+import cProfile
 import Config as config
 from dbpedia_analyzer import Extractor as ex
 from dbpedia_analyzer import FileParser as fp
 import logging as log
-import sys
 	
 def main():
 	'''teh main'''
@@ -20,8 +19,9 @@ def main():
 	
 	malsparql = open(config.malformedsparql, 'w+')
 	sparqls = open(config.sparqloutput, 'w+')
+	sparqlLogEntries = open(config.sparqlLogEntries, 'w+')
 	
-	extract = ex.Extractor(logger, sparqls, malsparql)
+	extract = ex.Extractor(logger, sparqls, malsparql, sparqlLogEntries)
 	
 	for f in fp.parseFolder(logger, config.inputfolder):
 		for item in fp.parseBZ2File(logger, f):
@@ -34,11 +34,13 @@ def main():
 	malsparql.flush()
 	malsparql.close()
 	
+	sparqlLogEntries.flush()
+	sparqlLogEntries.close()
+	
 	logger.info("END")
 	logger.info(extract.stats)
 	
 	return 0
 
 if __name__ == '__main__':
-	status = main()
-	sys.exit(status)
+	cProfile.run("main()")

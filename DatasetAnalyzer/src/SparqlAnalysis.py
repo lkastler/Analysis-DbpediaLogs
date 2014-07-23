@@ -7,11 +7,12 @@ from collections import defaultdict
 import Config as config
 from dbpedia_analyzer import FileParser as FP 
 import logging as log
+import namespaces as ns
 import rdflib.plugins.sparql as sparql
 import re
 import sys
 
-results = defaultdict()
+results = defaultdict(int)
 
 def handleSelect(regex, query):
 	countKeywords('select', regex, query)
@@ -48,7 +49,7 @@ def countKeywords(keyword, regex, query):
 def writeOutBGP(f, query):
 		''' writes existing BGP statistics (# triples and # of vars) in the query to given file'''
 		try:
-			sq = sparql.prepareQuery(query)
+			sq = sparql.prepareQuery(query, initNs=ns.ns)
 		except Exception as error:
 			log.warn(str([str(type(error)), str(error), sparql]) + '\n')
 			return
@@ -57,8 +58,7 @@ def writeOutBGP(f, query):
 		if sq.algebra.name == "SelectQuery":
 			if sq.algebra.p.name == 'Project':
 				if sq.algebra.p.p.name == 'BGP':
-					f.write(str([str(len(sq.algebra.p.p.triples)), str(len(sq.algebra.p.p._vars))]) + '\n')
-		
+					f.write(str(len(sq.algebra.p.p.triples)) + ', ' + str(len(sq.algebra.p.p._vars)) + '\n')		
 		# will hopefully reduce memory usage
 		del sq
 
