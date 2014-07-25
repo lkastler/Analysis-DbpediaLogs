@@ -8,6 +8,7 @@ import Config as config
 from dbpedia_analyzer import Extractor as ex
 from dbpedia_analyzer import FileParser as fp
 import logging as log
+import operator
 import sys
 import traceback
 
@@ -19,7 +20,7 @@ def main():
 	
 	logger.info("START")
 	
-	sparqls = open(config.sparqlLogEntries, 'w+')
+	sparqls = open(config.sparqlFile, 'w+')
 	
 	extract = ex.Extractor(logger, sparqls)
 	
@@ -34,13 +35,14 @@ def main():
 				exc_type, exc_value, exc_traceback = sys.exc_info()
 				lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
 				logger.error(''.join(line for line in lines))
+		# export intermediate results for better analysis
 		logger.info(extract.stats)
 		
 	sparqls.flush()
 	sparqls.close()
 	
 	logger.info("END")
-	logger.info(extract.stats)
+	logger.info(sorted(extract.stats.iteritems(), key=operator.itemgetter(1), reverse=True))
 	
 	return 0
 

@@ -14,7 +14,7 @@ def parseFolder(logger, folderName):
 def parseBZ2File(logger, fileName):
 	''' parses given bz2 file'''
 	logger.info('loading file: %s', fileName)
-	
+
 	f = bz2.BZ2File(fileName)
 	line = f.readline()
 	
