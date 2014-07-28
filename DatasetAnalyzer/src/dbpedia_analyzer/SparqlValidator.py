@@ -25,4 +25,4 @@ class SparqlValidator(object):
 		try:
 			return sparql.prepareQuery(text, initNs=self.namespaces)
 		except Exception as error: 
-			raise MalformedSparqlQueryError([str(type(error)), str(error), sparql])
+			raise MalformedSparqlQueryError([str(type(error)), str(error), text])

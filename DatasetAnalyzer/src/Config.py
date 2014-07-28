@@ -26,3 +26,9 @@ bgpExtractLog = superdir +'/output/bgp-analysis.log'
 
 global sparqlFile
 sparqlFile = superdir + '/output/sparql-uncleaned.log'
+
+global validSparql
+validSparql = superdir + "/output/sparql-valid.txt"
+
+
+
